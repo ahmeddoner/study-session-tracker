@@ -1,3 +1,4 @@
+import courseRoutes from "./routes/courseRoutes.js";
 import studySessionRoutes from "./routes/studySessionRoutes.js";
 import express from "express";
 import cors from "cors";
@@ -10,7 +11,10 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.use("/api/courses", courseRoutes);
 app.use("/api/study-sessions", studySessionRoutes);
+
 app.get("/api/health", (req, res) => {
   res.json({ message: "API is running" });
 });
