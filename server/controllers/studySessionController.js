@@ -2,7 +2,10 @@ import StudySession from "../models/StudySession.js";
 
 export const getAllStudySessions = async (req, res) => {
   try {
-    const sessions = await StudySession.find();
+    const sessions = await StudySession.find()
+      .populate("userId", "name username email")
+      .populate("course", "courseName difficulty");
+
     res.status(200).json(sessions);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch study sessions" });
