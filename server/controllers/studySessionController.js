@@ -21,3 +21,38 @@ export const createStudySession = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+export const getTotalStudyMinutesByCourse = async (req, res) => {
+  try {
+    const stats = await StudySession.aggregate([
+      {
+        $group: {
+          _id: "$course",
+          totalMinutes: { $sum: "$durationMinutes" },
+        },
+      },
+      {
+        $lookup: {
+          from: "courses",
+          localField: "_id",
+          foreignField: "_id",
+          as: "courseInfo",
+        },
+      },
+      {
+        $unwind: "$courseInfo",
+      },
+      {
+        $project: {
+          _id: 0,
+          courseName: "$courseInfo.courseName",
+          totalMinutes: 1,
+        },
+      },
+    ]);
+
+    res.status(200).json(stats);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch study statistics" });
+  }
+};
