@@ -1,121 +1,117 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [message, setMessage] = useState("");
+
+  const [users, setUsers] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [sessions, setSessions] = useState([]);
+
+  const [user, setUser] = useState({
+    name: "",
+    username: "",
+    email: "",
+    program: "",
+  });
+
+  const [course, setCourse] = useState({
+    courseName: "",
+    difficulty: 3,
+  });
+
+  const [session, setSession] = useState({
+    userId: "",
+    course: "",
+    date: "",
+    durationMinutes: 60,
+    topic: "",
+    focusLevel: 3,
+    notes: "",
+  });
+
+  const addUser = () => {
+    setUsers([...users, user]);
+    setMessage("User added locally");
+    setUser({ name: "", username: "", email: "", program: "" });
+  };
+
+  const addCourse = () => {
+    setCourses([...courses, course]);
+    setMessage("Course added locally");
+    setCourse({ courseName: "", difficulty: 3 });
+  };
+
+  const addSession = () => {
+    setSessions([...sessions, session]);
+    setMessage("Study session added locally");
+    setSession({
+      userId: "",
+      course: "",
+      date: "",
+      durationMinutes: 60,
+      topic: "",
+      focusLevel: 3,
+      notes: "",
+    });
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
+    <main style={{ maxWidth: "900px", margin: "0 auto", padding: "30px" }}>
+      <h1>Study Session Tracker</h1>
+      <p>Track users, courses, and study sessions.</p>
+
+      {message && <div style={{ background: "#d1fae5", padding: "12px", marginBottom: "20px" }}>{message}</div>}
+
+      <section>
+        <h2>Add User</h2>
+        <input placeholder="Name" value={user.name} onChange={(e) => setUser({ ...user, name: e.target.value })} />
+        <input placeholder="Username" value={user.username} onChange={(e) => setUser({ ...user, username: e.target.value })} />
+        <input placeholder="Email" value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} />
+        <input placeholder="Program" value={user.program} onChange={(e) => setUser({ ...user, program: e.target.value })} />
+        <button onClick={addUser}>Add User</button>
+
+        <h3>Users</h3>
+        <ul>
+          {users.map((u, i) => (
+            <li key={i}>{u.name} - {u.username} - {u.email} - {u.program}</li>
+          ))}
+        </ul>
       </section>
 
-      <div className="ticks"></div>
+      <section>
+        <h2>Add Course</h2>
+        <input placeholder="Course Name" value={course.courseName} onChange={(e) => setCourse({ ...course, courseName: e.target.value })} />
+        <input type="number" min="1" max="5" value={course.difficulty} onChange={(e) => setCourse({ ...course, difficulty: Number(e.target.value) })} />
+        <button onClick={addCourse}>Add Course</button>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
+        <h3>Courses</h3>
+        <ul>
+          {courses.map((c, i) => (
+            <li key={i}>{c.courseName} - difficulty {c.difficulty}</li>
+          ))}
+        </ul>
       </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <section>
+        <h2>Add Study Session</h2>
+        <input placeholder="User ID" value={session.userId} onChange={(e) => setSession({ ...session, userId: e.target.value })} />
+        <input placeholder="Course ID" value={session.course} onChange={(e) => setSession({ ...session, course: e.target.value })} />
+        <input type="date" value={session.date} onChange={(e) => setSession({ ...session, date: e.target.value })} />
+        <input type="number" value={session.durationMinutes} onChange={(e) => setSession({ ...session, durationMinutes: Number(e.target.value) })} />
+        <input placeholder="Topic" value={session.topic} onChange={(e) => setSession({ ...session, topic: e.target.value })} />
+        <input type="number" min="1" max="5" value={session.focusLevel} onChange={(e) => setSession({ ...session, focusLevel: Number(e.target.value) })} />
+        <textarea placeholder="Notes" value={session.notes} onChange={(e) => setSession({ ...session, notes: e.target.value })} />
+        <button onClick={addSession}>Add Study Session</button>
+
+        <h3>Study Sessions</h3>
+        <ul>
+          {sessions.map((s, i) => (
+            <li key={i}>
+              {s.date} - {s.topic} - {s.durationMinutes} minutes - focus {s.focusLevel}
+            </li>
+          ))}
+        </ul>
+      </section>
+    </main>
+  );
 }
-
-export default App
