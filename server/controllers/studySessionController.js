@@ -56,3 +56,37 @@ export const getTotalStudyMinutesByCourse = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch study statistics" });
   }
 };
+
+
+export const deleteStudySession = async (req, res) => {
+  try {
+    const deletedSession = await StudySession.findByIdAndDelete(req.params.id);
+
+    if (!deletedSession) {
+      return res.status(404).json({ error: "Study session not found" });
+    }
+
+    res.status(200).json({ message: "Study session deleted" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete study session" });
+  }
+};
+
+
+export const updateStudySession = async (req, res) => {
+  try {
+    const updatedSession = await StudySession.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedSession) {
+      return res.status(404).json({ error: "Study session not found" });
+    }
+
+    res.status(200).json(updatedSession);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
